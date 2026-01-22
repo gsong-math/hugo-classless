@@ -51,7 +51,10 @@
       {{- if .Site.Menus.main -}}
       <ul>
         {{- range .Site.Menus.main -}}
-        <li><a href="{{.URL | relURL}}">{{.Name}}</a></li>
+        {{- $menuURL := .URL | relURL -}}
+        {{- $pageURL := $.RelPermalink -}}
+        {{- $isActive := or ($.IsMenuCurrent "main" .) ($.HasMenuCurrent "main" .) (eq $menuURL $pageURL) (and (ne $menuURL "/") (hasPrefix $pageURL $menuURL)) -}}
+        <li><a href="{{ $menuURL }}"{{ if $isActive }} class="active" aria-current="page"{{ end }}>{{ .Name }}</a></li>
         {{- end -}}
       </ul>
       {{- end -}}
